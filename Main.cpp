@@ -1,52 +1,81 @@
 #include <iostream>
 using namespace std;
 
-class PlayerAction {
+class PlayerInput {
 public:
-    void Execute() {
-        cout << "Player choosing the hand or discard." << endl;
+    void ChooseAction() {
+        cout << "Player chooses play or discard." << endl;
+    }
+
+    void ChooseIndexes() {
+        cout << "Player chooses card indexes." << endl;
     }
 };
 
-class SystemResolver {
+class SystemLogic {
 public:
-    void EvaluateHand() {
-        cout << "Evaluating the Poker hand." << endl;
+    void ResolveAction() {
+        cout << "System calculates score or discards cards." << endl;
     }
 
-    void CalculateScore() {
-        cout << "Calculating the score." << endl;
+    void ApplyTokers() {
+        cout << "Tokers modify the score." << endl;
     }
 };
 
 class GameState {
 public:
-    int score = 0;
-
-    void Update() {
-        cout << "Updating the game state." << endl;
+    void UpdateState() {
+        cout << "Updating score, hands, and discards." << endl;
     }
 
-    bool IsGameOver() {
+    bool CheckTarget() {
+        cout << "Checking if target score is reached." << endl;
+        return false;
+    }
+
+    bool NoHandsLeft() {
         return false;
     }
 };
 
+class ShopSystem {
+public:
+    void OpenShop() {
+        cout << "Player enters shop and chooses to buy or not." << endl;
+    }
+};
+
 class GameSession {
+
 private:
-    PlayerAction player;
-    SystemResolver system;
+    PlayerInput player;
+    SystemLogic system;
     GameState state;
+    ShopSystem shop;
 
 public:
+
     void StartGame() {
 
-        while (!state.IsGameOver()) {
+        while (true) {
 
-            player.Execute();         
-            system.EvaluateHand();     
-            system.CalculateScore();    
-            state.Update();             
+            player.ChooseAction();      // Step 1
+            player.ChooseIndexes();    // Step 2
+
+            system.ResolveAction();    // Step 3
+            system.ApplyTokers();      // Step 4
+
+            state.UpdateState();       // Step 5
+
+            if (state.CheckTarget()) { // Step 6–7
+                shop.OpenShop();       // Step 8–9
+            }
+
+            if (state.NoHandsLeft()) {
+                cout << "Player loses." << endl;
+                break;
+            }
 
             cout << "Loops the rooms https://www.youtube.com/watch?v=icBDYkfxpMs\n" << endl;
             break; 
@@ -56,9 +85,8 @@ public:
 
 int main() {
 
-    GameSession session;
-    session.StartGame();
+    GameSession game;
+    game.StartGame();
 
     return 0;
-
 }
