@@ -4,7 +4,7 @@ using namespace std;
 class PlayerAction {
 public:
     void Execute() {
-        cout << "Player chooses cards or discards." << endl;
+        cout << "Player choosing the hand or discard." << endl;
     }
 };
 
@@ -60,4 +60,5 @@ int main() {
     session.StartGame();
 
     return 0;
+
 }
