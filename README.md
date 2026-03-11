@@ -82,7 +82,6 @@ int attack_;
 };
 #endif
 
-4
 
 Character.cpp
 #include "Character.h"
@@ -126,7 +125,6 @@ void PlayerTurn();
 void EnemyTurn();
 void CheckOutcome();
 
-5
 
 bool IsGameOver() const;
 Character player_;
@@ -171,7 +169,6 @@ bool GameSession::IsGameOver() const {
 return player_.GetHP() <= 0 || enemy_.GetHP() <= 0;
 }
 
-6
 
 main.cpp
 #include "GameSession.h"
@@ -191,3 +188,15 @@ Explanation of Architectural Discipline
 7.	If shop behavior changes, only ShopSystem changes.
 Because responsibilities are separated, new features can be added without modifying the core loop, preserving the architecture of the game.
 
+Reflection
+What is the invariant structure in your program?
+The invariant structure is the part of the program that I can’t change, even when I add new features. In this project, the invariant structure is the RunSession and everything related to its core loop. RunSession controls the order of how the game runs. Like when I added the random input generator, I didn’t need to change anything inside RunSession. But i just connected it to another class. Anything that might need to change later is in separate files so the main loop stays the same.
+
+Which parts are mutable?
+The mutable parts are basically everything outside of RunSession. These include classes like InputGenerator, ShopSystem, ScoringSystem, ModifierFactory, and others. These components can be modified, improved, or replaced without affecting the core loop of the program. Because they are separated into their own files, changes to them shouldn't break the main structure of the game.
+
+3. If you wanted to add a new feature, which class would change?
+The class that changes would depend on the feature being added. For example, if I wanted to add a new scoring mechanic, I would probably modify ScoringSystem. If I wanted to add new Tokers or modifiers, I would update ModifierFactory or the modifier classes themselves. If the feature involves buying new items or upgrades, I would modify ShopSystem. In most cases i will be modifying the mutables and RunSession would not need to change because it only manages the order of the gameplay phases rather than the detailed logic of each system.
+
+4. If you changed the loop order, what would break?
+If the loop order in RunSession changed, the gameplay would break. Each step in the loop depends on the result of the previous one. For example, the system cannot calculate the score before the player selects cards. Tokers also cannot modify the score before the scoring system produces a result. the game cannot check whether the target is reached before the score is updated. Changing this order would cause incorrect calculations or invalid game states. Because of this dependency, the loop structure must remain fixed to ensure that the game works correctly.
