@@ -189,10 +189,10 @@ Explanation of Architectural Discipline
 Because responsibilities are separated, new features can be added without modifying the core loop, preserving the architecture of the game.
 
 Reflection
-What is the invariant structure in your program?
+1. What is the invariant structure in your program?
 The invariant structure is the part of the program that I can’t change, even when I add new features. In this project, the invariant structure is the RunSession and everything related to its core loop. RunSession controls the order of how the game runs. Like when I added the random input generator, I didn’t need to change anything inside RunSession. But i just connected it to another class. Anything that might need to change later is in separate files so the main loop stays the same.
 
-Which parts are mutable?
+2. Which parts are mutable?
 The mutable parts are basically everything outside of RunSession. These include classes like InputGenerator, ShopSystem, ScoringSystem, ModifierFactory, and others. These components can be modified, improved, or replaced without affecting the core loop of the program. Because they are separated into their own files, changes to them shouldn't break the main structure of the game.
 
 3. If you wanted to add a new feature, which class would change?
